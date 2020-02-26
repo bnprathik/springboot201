@@ -1,0 +1,259 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/header :: header-css"/>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     
+	  <script type="text/javascript" >
+	  function myFunction() {
+		    document.getElementById("myP").style.visibility = "visible";
+
+		}
+	  
+	  function myFunction1() {
+		    document.getElementById("restoselection").style.visibility = "visible";
+
+		}
+	  
+	  function myFunction2() {
+		    document.getElementById("demo1").style.visibility = "visible";
+
+		}
+	  function myFunction3() {
+		    document.getElementById("Afterbooking").style.visibility = "visible";
+
+		}
+	  /*<![CDATA[*/
+		  
+		  var input =[];
+	  $( document ).ready(function() {
+			
+			$("#restosearch").submit(function(event){
+				event.preventDefault();
+				ajaxGet();
+			});
+			$("#restoselection").submit(function(event){
+				event.preventDefault();
+				GetTables();
+			});
+			
+			$("#tableselection").submit(function(event){
+				event.preventDefault();
+				BookTables();
+			});
+			
+
+			function ajaxGet(){
+				$.ajax({
+					type : "GET",
+					url : "http://localhost:4000/hotel/"+$("#city").val()+"",
+					success: function(result){
+						var text = "";
+						var i = 0;
+	
+						for (i ;i< result.length;i++) {
+						   
+						   text += "<option>"+result[i]+"</option><br></br>";
+										    
+						}
+						 document.getElementById("demo").innerHTML = text;	
+						
+					},
+					error : function(e) {
+						$("#getResultDiv").html("<strong>Error</strong>");
+						console.log("ERROR: ", e);
+					}
+				});	
+			}
+			
+			
+			function GetTables(){
+				$.ajax({
+					type : "GET",
+					url : "http://localhost:4000/tableno/"+$("#demo").val()+"",
+					success: function(results){
+						console.log(results);
+						input= results;
+                        var count = input.length;
+                        var x = document.getElementById("tab");
+                        x.innerHTML = null;
+                        for (var i =0;i<count;i++) {
+                               var hotel = input[i];
+                               var option = document.createElement("tr")
+                               var att = document.createAttribute("id");                                 
+                               att.value = hotel[0];                                  
+                               option.setAttributeNode(att); 
+                               option.innerHTML = '<input type="checkbox" value ="'+hotel[0]+'" onclick="myFunction()"  id="hotelidradio"/><td><b>Table no</b> : ' + hotel[0]
+                                             + " </td> <td> <b>Menu </b>: " + hotel[1]
+                               			     + " </td><td> <b>Seats<b> : " + hotel[2]
+				                             + "</td><td>  <b>Price : " + hotel[3]
+				                             + "</td>  <b>Status : " + hotel[4];
+                       		   x.append(option);
+						
+                        }
+						
+						
+						
+					},
+					error : function(e) {
+						$("#getResultDiv").html("<strong>Error</strong>");
+						console.log("ERROR: ", e);
+					}
+				});	
+			}
+			
+			function BookTables(){
+		    	
+		    	// PREPARE FORM DATA
+		    	var formData = {
+		    		bookingdate : $("#custdate").val(),
+		    		custname :  $("#username").val(),
+		    		email :  $("#custemail").val()		    	
+		    	}
+		    	var index = document.getElementById("hotelidradio").selectedIndex ="2";
+		    	console.log(index);
+		    	// DO POST
+		    	$.ajax({
+					type : "POST",
+					contentType : "application/json",
+					url :"http://localhost:4000/booking/"+$("#hotelidradio").val(),
+					data : JSON.stringify(formData),
+					dataType : 'json',
+					success : function(result) {
+						console.log(result);
+						console.log(formData);
+						Sendemail();
+						},
+					error : function(e) {
+						alert("Booked Successfully");
+						Sendemail();
+					}
+				});
+		    	
+
+		    }
+			
+			
+			function Sendemail(){
+				$.ajax({
+					type : "GET",
+					url : "http://localhost:4000/sendemail/"+$("#custemail").val()+"/"+$("#username").val()+"/"+$("#custdate").val()+"/"+$("#hotelidradio").val()+"",
+					success: function(results){						
+						alert("email Sent");					
+					},
+					error : function(e) {
+						alert("email Sent");
+						console.log("ERROR: ", e);
+					}
+				});	
+			}
+			
+		})
+	 /*]]>*/
+		</script>
+		<style>
+		#myP{
+visibility: hidden;
+}
+#restoselection{
+visibility: hidden;
+}
+
+#demo1{
+visibility: hidden;
+}
+#Afterbooking{
+visibility: hidden;
+}
+		</style>
+		 <title>OnlineTableManagment201</title>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        	 <h1>Restuarent Reservation System</h1>
+       		 <h4 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h4>
+			 <h3>Please select appropriate options</h3>
+    <div> 
+       	<form id="restosearch">
+    		<div class="form-group">
+				     <label >Select city:</label>
+				     <select class="form-control" id="city">
+				        <option>Bangalore</option>
+				        <option>Pune</option>
+				        <option>Mumbai</option>
+				     </select>
+      			<button type="submit" onclick="myFunction1()" class="btn btn-default">Search</button>
+      		</div>
+        </form>
+    </div>
+      
+      
+      <form id="restoselection">
+			<div>
+	    			 <select class="form-control" id="demo">
+      				 </select>
+       			<button type="submit" onclick="myFunction2()" class="btn btn-default">See Tables</button>
+    		</div>
+      </form>
+      
+      
+      
+      <div id="demo1" >
+      
+      
+      <form id="tableselection" >
+      <table class="table table-responsive" cellspacing="10"> 
+     		<thead>
+         		<tr>
+             		<th>Select Table</th>
+           		</tr>
+    		 </thead>
+     		<tbody style="width:50%">
+     			
+         			<tr id ="tab"  style="width:50%">
+         			</tr>
+         			
+         			
+         		
+         	</tbody>
+	</table>
+					<div id="myP">
+					 <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg"
+                               placeholder="Name" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="Email" id="custemail" class="form-control input-lg"
+                               placeholder="Email" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" name="Date" id="custdate" class="form-control input-lg"
+                               placeholder="Date" required="true" autofocus="true"/>
+                    </div>
+                    <button   type="submit" onclick="myFunction3()" class="btn btn-default">book Table</button>
+					</div>
+	
+	</form>
+      
+      </div>
+      
+      <div id ="Afterbooking">
+      <h2>Thanks For booking We will be in touch with you</h2>
+      <h3>Booking details is sent through Email </h3>
+      </div>
+ 
+  </div>
+   </div>
+
+<!-- /.container -->
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

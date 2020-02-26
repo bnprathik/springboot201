@@ -1,0 +1,88 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <title>OnlineTableManagment201</title>
+    <div th:replace="fragments/header :: header-css"/>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+     
+	  <script src="/main.js" ></script>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="starter-template">
+        <h3>Admin</h3>
+         <h4 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h4>
+        <h1>Restuarant Registeration</h1>
+        <h5>Available citys presently: Bangalore,Pune,Mumbai</h5>
+
+<div>
+		<form class="form-inline" style="margin:20px 20px 20px 20px" id="restoreg">
+			<div class="form-group">
+				<label for="city" style="margin-right:5px">City:</label>
+				<input type="text" class="form-control" id="city" placeholder="Enter city"/>
+			</div>
+			<div class="form-group">
+				<label for="hotelname" style="margin-left:20px; margin-right:5px">Hotel Name:</label>
+				<input type="text" class="form-control" id="hotelname" placeholder="Enter hotelname"/>
+			</div>
+			<div class="form-group">
+				<label for="description" style="margin-left:20px; margin-right:5px">Hotel Description:</label>
+				<input type="text" class="form-control" id="description" placeholder="description"/>
+			</div>
+			
+			<button type="submit" class="btn btn-default" style="margin-left:20px; margin-right:5px">Submit</button>
+		</form>
+	</div>
+	
+	<br></br>
+	<br></br>
+	
+	
+	
+	
+
+
+		<form class="form-inline"  id="tableform">
+			<pre>
+			<h3>Table Creation</h3>
+				<label for="numberofseats" >No of Seats:</label>
+				<input type="text" class="form-control" id="numberofseats" placeholder="Enter numberofseats"/>
+
+			
+				<label for="status"  >Status:</label>
+				<input type="text" class="form-control" id="status" placeholder="Enter status"/>
+			
+			
+				<label for="menu" >Menu:</label>
+				<input type="text" class="form-control" id="menu" placeholder="menu"/>
+			
+			
+			
+				<label for="price" >Price:</label>
+				<input type="text" class="form-control" id="price" placeholder="price"/>
+		
+
+				<label for="hotel_hotelid" >Hotel Id:</label>
+				<input type="number" class="form-control" id="hotel_hotelid" placeholder="hotel_hotelid"/>
+			</pre>
+			
+			<button type="submit" class="btn btn-default" style="margin-left:20px; margin-right:5px">Add Tables</button>
+		</form>
+
+       
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+OnlineTable Reservation System by Springpeople
+
+
+
+
+
+*****************************************************************
+||Registered user and password||
+*****************************************************************
+user(1)-> username:user
+    -> password:password
+
+user(2)-> username:prathik
+    -> password:123
+
+
+
+
+*****************************************************************
+||Admin name and password||
+*****************************************************************
+admin(1)-> username:admin	
+    -> password:password
+
+admin(2)-> username:prathik
+    -> password:1234
+
+
+
+
+
+By->Prathik Bharadwaj (M1041715) Mindtree Ltd

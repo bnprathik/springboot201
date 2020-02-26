@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <title>OnlineTableManagment201</title>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <div th:replace="fragments/header :: header-css"/>
+    <script>
+    
+    $( document ).ready(function() {
+		
+		$("#signupform").submit(function(event){
+			event.preventDefault();
+			addcust();
+		});
+    function addcust(){
+    	
+    	// PREPARE FORM DATA
+    	var formData = {
+    		customereemail : $("#custemail").val(),
+    		customername :  $("#username").val(),
+    		password :  $("#password").val()		    	
+    	}
+    	// DO POST
+    	$.ajax({
+			type : "POST",
+			contentType : "application/json",
+			url :"http://localhost:8080/signupcustom",
+			data : JSON.stringify(formData),
+			dataType : 'json',
+			success : function(result) {
+				console.log(result);
+				console.log(formData);
+				},
+			error : function(e) {
+				console.log(formData);
+				console.log(e);
+				
+				alert("Registered Successfully");
+				window.location = "http://localhost:8080/";
+			}
+		});
+    	
+
+    }
+    })
+    </script>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"/>
+
+<div class="container">
+
+    <div class="row" style="margin-top:20px">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form th:action="@{/login}" id="signupform">
+                <fieldset>
+                    <h1>Sign Up</h1>
+
+                    <div th:if="${param.error}">
+                        <div class="alert alert-danger">
+                            Invalid username and password.
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg"
+                               placeholder="Name" required="true" autofocus="true"/>
+                    </div>                    
+                    <div class="form-group">
+                        <input type="email" name="Email" id="custemail" class="form-control input-lg"
+                               placeholder="Enter Email" required="true" autofocus="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="Create Password" id="password" class="form-control input-lg"
+                               placeholder=" Create Password" required="true"/>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="Retype Password" id="password1" class="form-control input-lg"
+                               placeholder="ReType Password" required="true"/>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign Up"/>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
